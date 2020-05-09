@@ -5,3 +5,4 @@
 .idea/inspectionProfiles/profiles_settings.xml
 db.sqlite3
 sentence_tokenizer.pickle
+*.json
