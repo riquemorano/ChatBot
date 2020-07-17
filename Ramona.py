@@ -1,3 +1,8 @@
+import logging 
+
+logger = logging.getLogger() 
+logger.setLevel(logging.CRITICAL)
+
 from chatterbot import ChatBot
 chatbot = ChatBot('Ramona')
 

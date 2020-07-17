@@ -1,8 +1,10 @@
 .idea/misc.xml
 .idea/modules.xml
 .idea/Ramona.iml
-.idea/workspace.xml
+.idea/
 .idea/inspectionProfiles/profiles_settings.xml
 db.sqlite3
 sentence_tokenizer.pickle
 *.json
+.vscode
+/.env
