@@ -1,29 +1,25 @@
-from os import system, name
+#UFT-8
 import logging
 from chatterbot import ChatBot
 
 logger = logging.getLogger()
 logger.setLevel(logging.CRITICAL)
 
+chatbot = ChatBot('Chatbot')
 
-def clear():
-
-    if name == 'nt':
-        _ = system('cls')
-
-    else:
-        _ = system('clear')
-
-
-chatbot = ChatBot('Ramona')
-
-clear()
-print("Ramona: Olá")
+print("Chatbot: Olá")
 
 while True:
+    
+    try:
+        entrada = input("Você: ").lower()
+        if(entrada == "sair" or entrada == "exit" or entrada == "tchau"):
+            break    
+        saida = chatbot.get_response(entrada.capitalize())
+        if float(saida.confidence) > 0.8:
 
-    quest = input("Você: ").capitalize()
-    if(quest == "sair".capitalize()):
+            print('Chatbot: ', saida)
+        else:
+            print('Chatbot: Não Entendi')
+    except(KeyboardInterrupt, EOFError, SystemExit):
         break
-    response = chatbot.get_response(quest)
-    print('Ramona: ', response)

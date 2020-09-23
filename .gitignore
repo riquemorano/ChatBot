@@ -8,3 +8,4 @@ sentence_tokenizer.pickle
 *.json
 .vscode
 /.env
+__pycache__/Main.cpython-38.pyc
