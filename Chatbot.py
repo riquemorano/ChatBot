@@ -5,18 +5,38 @@ from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 
 
+def sair():
+    print("1 - Sim\n2 - Não")
+    resposta = int(input("Realmente quer sair?"))
+
+    if resposta == 1:
+        return True
+
+    elif resposta == 2:
+        return False
+
+
+def limpa_tela():
+
+    if name == 'nt':
+        _ = system('cls')
+
+    else:
+        _ = system('clear')
+
+
+def pausa():
+    if name == 'nt':
+        _ = system('pause')
+
+    else:
+        _ = system("read -rsp $'Press enter to continue...\n'")
+
+
 class Bot:
 
     def __init__(self, nome_bot="Chatbot"):
         self.nome_bot = nome_bot
-
-    def clear(self):
-
-        if name == 'nt':
-            _ = system('cls')
-
-        else:
-            _ = system('clear')
 
     def conversar(self):
 
@@ -25,7 +45,7 @@ class Bot:
 
         chatbot = ChatBot(self.nome_bot)
 
-        self.clear()
+        limpa_tela()
 
         print(f'{self.nome_bot}: Olá')
 
@@ -33,27 +53,28 @@ class Bot:
             try:
                 entrada = input("Você: ").lower()
                 if(entrada == "sair" or entrada == "exit" or entrada == "tchau"):
-                    break
+                    if sair():
+                        break
                 saida = chatbot.get_response(entrada.capitalize())
                 if float(saida.confidence) > 0.8:
                     print(f'{self.nome_bot}: {saida}')
                 else:
                     print(f'{self.nome_bot}: Não Entendi')
             except(KeyboardInterrupt, EOFError, SystemExit):
-                break
+                if sair():
+                    break
 
     def treinar(self):
-        
+
         while True:
             try:
                 nome_arquivo = input("\nDigite o nome do arquivo: ").lower()
                 caminho = ("Conversas" + '/' + nome_arquivo + '.txt')
-                print(
-                    f'\nProcurando arquivo no seguinte caminho: {caminho}')
                 if (nome_arquivo == "exit" or nome_arquivo == "sair"):
                     break
-
                 elif (os.path.exists(caminho)):
+                    print(
+                        f'\nProcurando arquivo no seguinte caminho: {caminho}')
                     print(f'\nArquivo {nome_arquivo} encontrado')
                     chatbot = ChatBot(self.nome_bot)
                     trainer = ListTrainer(chatbot)
@@ -61,14 +82,28 @@ class Bot:
                     trainer.train(treino.readlines())
                 else:
                     print(f'\nArquivo {nome_arquivo} não encontrado')
-                    break
-                self.clear()
+                    pausa()
+                    limpa_tela()
             except(KeyboardInterrupt, EOFError, SystemExit):
-                break
+                if sair():
+                    break
 
 
 bot = Bot()
-
-
-bot.conversar()
-bot.treinar()
+while True:
+    try:
+        limpa_tela()
+        print("""1 - Treinar\n2 - Conversar\n3 - Sair""")
+        resposta = int(input("\nDigite a Opção desejada: "))
+        if resposta == 1:
+            bot.treinar()
+        elif resposta == 2:
+            bot.conversar()
+        elif resposta == 3:
+            break
+        else:
+            print("Resposta Inválida")
+            pausa()
+    except(KeyboardInterrupt, EOFError, SystemExit):
+        # verificar se realmente quer sair
+        break
