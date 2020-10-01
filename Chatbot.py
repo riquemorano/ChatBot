@@ -4,23 +4,30 @@ from os import system, name
 from chatterbot import ChatBot
 from chatterbot.trainers import ListTrainer
 
+palavras_sair = ("sair", "tchau", "exit", "bye")
+
 
 def sair():
-    print("1 - Sim\n2 - Não")
-    resposta = int(input("Realmente quer sair?"))
 
-    if resposta == 1:
-        return True
+    try:
+        limpa_tela()
+        print("Realmente quer sair?\n")
+        print("1 - Sim\n2 - Não\n")
+        resposta = int(input("Digite a Opção desejada: "))
 
-    elif resposta == 2:
-        return False
+        if resposta == 1:
+            return True
+
+        elif resposta == 2:
+            return False
+    except(KeyboardInterrupt, EOFError, SystemExit):
+        exit()
 
 
 def limpa_tela():
 
     if name == 'nt':
         _ = system('cls')
-
     else:
         _ = system('clear')
 
@@ -28,7 +35,6 @@ def limpa_tela():
 def pausa():
     if name == 'nt':
         _ = system('pause')
-
     else:
         _ = system("read -rsp $'Press enter to continue...\n'")
 
@@ -36,30 +42,28 @@ def pausa():
 class Bot:
 
     def __init__(self, nome_bot="Chatbot"):
+
         self.nome_bot = nome_bot
 
     def conversar(self):
 
         logger = logging.getLogger()
         logger.setLevel(logging.CRITICAL)
-
         chatbot = ChatBot(self.nome_bot)
-
         limpa_tela()
-
         print(f'{self.nome_bot}: Olá')
-
         while True:
             try:
-                entrada = input("Você: ").lower()
-                if(entrada == "sair" or entrada == "exit" or entrada == "tchau"):
+                entrada = input("Você: ").lower().lstrip(' ')
+                if(entrada in palavras_sair):
                     if sair():
                         break
-                saida = chatbot.get_response(entrada.capitalize())
-                if float(saida.confidence) > 0.8:
-                    print(f'{self.nome_bot}: {saida}')
                 else:
-                    print(f'{self.nome_bot}: Não Entendi')
+                    saida = chatbot.get_response(entrada.capitalize())
+                    if float(saida.confidence) > 0.8:
+                        print(f'{self.nome_bot}: {saida}')
+                    else:
+                        print(f'{self.nome_bot}: Não Entendi')
             except(KeyboardInterrupt, EOFError, SystemExit):
                 if sair():
                     break
@@ -68,10 +72,13 @@ class Bot:
 
         while True:
             try:
-                nome_arquivo = input("\nDigite o nome do arquivo: ").lower()
+                limpa_tela()
+                nome_arquivo = input(
+                    "Digite o nome do arquivo: ").lower().lstrip(' ')
                 caminho = ("Conversas" + '/' + nome_arquivo + '.txt')
-                if (nome_arquivo == "exit" or nome_arquivo == "sair"):
-                    break
+                if (nome_arquivo in palavras_sair):
+                    if sair():
+                        break
                 elif (os.path.exists(caminho)):
                     print(
                         f'\nProcurando arquivo no seguinte caminho: {caminho}')
@@ -93,17 +100,18 @@ bot = Bot()
 while True:
     try:
         limpa_tela()
-        print("""1 - Treinar\n2 - Conversar\n3 - Sair""")
+        print("1 - Treinar\n2 - Conversar\n3 - Sair")
         resposta = int(input("\nDigite a Opção desejada: "))
         if resposta == 1:
             bot.treinar()
         elif resposta == 2:
             bot.conversar()
         elif resposta == 3:
-            break
+            if sair():
+                break
         else:
             print("Resposta Inválida")
             pausa()
     except(KeyboardInterrupt, EOFError, SystemExit):
-        # verificar se realmente quer sair
-        break
+        if sair():
+            break

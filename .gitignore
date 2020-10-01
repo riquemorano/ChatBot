@@ -9,3 +9,4 @@ sentence_tokenizer.pickle
 .vscode
 /.env
 __pycache__/Main.cpython-38.pyc
+tempCodeRunnerFile.py
