@@ -36,7 +36,7 @@ def pausa():
     if name == 'nt':
         _ = system('pause')
     else:
-        _ = system("read -rsp $'Press enter to continue...\n'")
+        _ = system("read -n1 -r -p 'Press any key to continue...' key")
 
 
 class Bot:
@@ -75,7 +75,7 @@ class Bot:
                 limpa_tela()
                 nome_arquivo = input(
                     "Digite o nome do arquivo: ").lower().lstrip(' ')
-                caminho = ("Conversas" + '/' + nome_arquivo + '.txt')
+                caminho = ("Treinamentos" + '/' + nome_arquivo + '.txt')
                 if (nome_arquivo in palavras_sair):
                     if sair():
                         break
@@ -87,6 +87,7 @@ class Bot:
                     trainer = ListTrainer(chatbot)
                     treino = open(caminho, 'r', encoding="utf8")
                     trainer.train(treino.readlines())
+                    pausa()
                 else:
                     print(f'\nArquivo {nome_arquivo} não encontrado')
                     pausa()
