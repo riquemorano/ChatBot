@@ -10,3 +10,6 @@ sentence_tokenizer.pickle
 /.env
 __pycache__/Main.cpython-38.pyc
 tempCodeRunnerFile.py
+db.sqlite3-shm
+db.sqlite3-wal
+dockerfile
