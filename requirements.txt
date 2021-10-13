@@ -5,7 +5,7 @@ click==7.1.2
 clock==0.1
 joblib==0.16.0
 mathparse==0.1.2
-nltk==3.5
+nltk==3.6.5
 packaging==20.4
 Pint==0.14
 pymongo==3.10.1
